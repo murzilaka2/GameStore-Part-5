@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Product>
+<div class="row">
+    <div class="col-1 font-weight-bold">Id</div>
+    <div class="col font-weight-bold">Название</div>
+    <div class="col font-weight-bold">Категория</div>
+    <div class="col font-weight-bold">Закупочная цена</div>
+    <div class="col font-weight-bold">Розничная цена</div>
+</div>
+
+@{
+    int i = 0;
+}
+
+<form asp-action="UpdateAll" method="post">
+
+    @foreach (Product p in Model)
+    {
+        <div class="row">
+            <div class="col-1">
+                @p.Id
+                <input type="hidden" name="Products[@i].Id" value="@p.Id">
+            </div>
+            <div class="col">
+                @p.Name
+                <input class="form-control" name="Products[@i].Name" value="@p.Name">
+            </div>
+            <div class="col">
+                @p.Category
+                <input class="form-control" name="Products[@i].Category" value="@p.Category">
+            </div>
+            <div class="col">
+                @p.PurchasePrice
+                <input class="form-control" name="Products[@i].PurchasePrice" value="@p.PurchasePrice">
+            </div>
+            <div class="col">
+                @p.RetailPrice
+                <input class="form-control" name="Products[@i].RetailPrice" value="@p.RetailPrice">
+            </div>
+        </div>
+        i++;
+    }
+    <div class="form-group text-center">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </div>
+
+</form>

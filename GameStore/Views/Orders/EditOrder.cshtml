@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Создание / Обновление заказа";
+}
+@model Order
+
+<div class="p-5 text-center bg-light">
+    <h2 class="mb-3">Создание / Обновление заказа</h2>
+</div>
+
+<form asp-action="AddOrUpdateOrder" method="post">
+    <div class="form-group">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" class="form-control" readonly="readonly" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="State"></label>
+        <input asp-for="State" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ZipCode"></label>
+        <input asp-for="ZipCode" class="form-control" />
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            <input type="checkbox" asp-for="Shipped" class="form-check-input" />
+            Отправлен
+        </label>
+    </div>
+
+    <h6 class="mt-1 р-2 bg-primary text-white text-center">
+        Заказанные товары
+    </h6>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col font-weight-bold">Товар</div>
+            <div class="col font-weight-bold">Категория</div>
+            <div class="col font-weight-bold">Количество</div>
+        </div>
+        @{
+            int counter = 0;
+        }
+        @foreach (OrderLine line in ViewBag.Lines)
+        {
+            <input type="hidden" name="lines[@counter].Id" value="@line.Id" />
+            <input type="hidden" name="lines[@counter].ProductId" value="@line.ProductId" />
+            <input type="hidden" name="lines[@counter].OrderId" value="@line.OrderId" />
+            <div class="row mt-1">
+                <div class="col">@line.Product.Name</div>
+                <div class="col">@line.Product.Category.Name</div>
+                <div class="col">
+                    <input type="number" name="lines[@counter].Quantity" value="@line.Quantity" />
+                </div>
+            </div>
+            counter++;
+        }
+    </div>
+    <div class="form-group text-center">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </div>
+</form>

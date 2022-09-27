@@ -1,0 +1,62 @@
+﻿<form method="get" class="form-inline m-3" id="pageform">
+    <button name="options.CurrentPage" value="@(Model.CurrentPage - 1)"
+            class="btn btn-outline-primary @(!Model.HasPreviousPage ? "disabled" : "")" type="submit">
+        Назад
+    </button>
+
+    @for (int i = 1; i <= 3 && i <= Model.TotalPages; i++)
+    {
+        <button name="options.CurrentPage" value="@i" type="submit"
+            class="btn btn-outline-primary @(Model.CurrentPage == i ? "active" : "")">
+            @i
+        </button>
+    }
+    @if (Model.CurrentPage > 3 && Model.TotalPages - Model.CurrentPage >= 3)
+    {
+        @:...
+        <button class="btn btn-outline-primary active">@Model.CurrentPage</button>
+    }
+    @if (Model.TotalPages > 3)
+    {
+        @:...
+        @for (int i = Math.Max(4, Model.TotalPages - 2); i <= Model.TotalPages; i++)
+        {
+            <button name="options.CurrentPage" value="@i" type="submit"
+            class="btn btn-outline-primary @(Model.CurrentPage == i ? "active" : "")">
+                @i
+            </button>
+        }
+    }
+    <button name="options.CurrentPage" value="@(Model.CurrentPage + 1)" type="submit"
+            class="btn btn-outline-primary @(!Model.HasNextPage ? "disabled":"")">
+        Вперед
+    </button>
+
+    <select name="options.PageSize" class="my-form-control">
+        @foreach (int val in new int[] { 10, 25, 50, 100 })
+        {
+            <option value="@val" selected="@(Model.PageSize == val)">@val</option>
+        }
+    </select>
+    <input type="hidden" name="options.CurrentPage" value="1" />
+    <button type="submit" class="btn btn-outline-primary">Изменить размер страницы</button>
+</form>
+
+
+<style>
+    .my-form-control {
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+</style>

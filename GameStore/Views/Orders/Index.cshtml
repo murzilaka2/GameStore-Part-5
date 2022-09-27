@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Все заказы";
+}
+@model IEnumerable<Order>
+
+<h3 class="p-2 bg-primary text-white text-center">Заказы</h3>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-1 fw-bold">Id</div>
+        <div class="col fw-bold">Название</div>
+        <div class="col fw-bold">Zip</div>
+        <div class="col fw-bold">Всего</div>
+        <div class="col fw-bold">Сумма</div>
+        <div class="col fw-bold">Статус</div>
+        <div class="col-3"></div>
+    </div>
+</div>
+<div>
+
+    @foreach (Order order in Model)
+    {
+        <div class="row p-2">
+            <div class="col-1">@order.Id</div>
+            <div class="col">@order.CustomerName</div>
+            <div class="col">@order.ZipCode</div>
+            <div class="col">@order.Lines.Sum(e=>e.Quantity * e.Product.RetailPrice - e.Product.PurchasePrice)</div>
+            <div class="col">@(order.Shipped ? "Отправлен" : "Ожидается отправка")</div>
+            <div class="col-3 text-right">
+                <form asp-action="DeleteOrder" method="post">
+                    <input type="hidden" name="Id" value="@order.Id">
+                    <a asp-action="EditOrder" asp-route-id="@order.Id" class="btn btn-outline-primary">Редактировать</a>
+                    <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+<div class="text-center">
+    <a asp-action="EditOrder" class="btn btn-primary">Создать</a>
+</div>
